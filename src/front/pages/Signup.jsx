@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-const Form = () =>{
+export const Signup = () =>{
 
     const { store, dispatch } = useGlobalReducer()
+    
 
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState ("")
+    const navigate = useNavigate()
     
     function sendData(e){
         e.preventDefault()
+        navigate("/demo")
         
         const requestOptions = {
             method: "POST",
@@ -20,10 +24,11 @@ const Form = () =>{
                     "email": email,
                     "password": password
                 }
-            )
+            ),
+            
         }
         
-        fetch( import.meta.env.VITE_BACKEND_URL + "/api/login", requestOptions)
+        fetch( import.meta.env.VITE_BACKEND_URL + "/api/signup", requestOptions)
         .then((response) => {
             if (response.status == 200){
                 dispatch({ 
@@ -53,15 +58,12 @@ const Form = () =>{
                     <input value= {password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1"/>
                 </div>
                 <div className="d-flex justify-content-between">
-                <Link to="/signup">
-                  <button type="submit" className="btn btn-primary">Create User</button>
-                </Link>
-                  <button type="submit" className="btn btn-success">Login</button>
+                    <button  type="submit" className="btn btn-success">Create User</button>
+                    <Link to="/">
+                    <button type="submit" className="btn btn-danger">Back to Home</button>
+                    </Link>
                 </div>
              </form>
-
         </div>
     )        
 }
-
- export default Form
